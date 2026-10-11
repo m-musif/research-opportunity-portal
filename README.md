@@ -6,15 +6,41 @@ Faculty can post research openings in one place instead of email, WhatsApp, and 
 
 **GitHub repository:** https://github.com/m-musif/research-opportunity-portal
 
-## Planned stack
+## Stack
 
 - Backend: Node.js and Express
 - Database: MySQL
-- Frontend: HTML, CSS, and JavaScript
+- Frontend: HTML, CSS, and JavaScript (not started yet)
 
-## What is in this commit
+## Run the API
 
-Project README and `.gitignore` only. Database schema, API routes, and the frontend come in later commits.
+1. Install MySQL and create the tables:
+
+```sql
+source database/schema.sql
+```
+
+2. From the `backend` folder, copy `backend/.env.example` to `backend/.env` and set the database password there. Do not commit `.env`.
+
+3. Install dependencies and start the server:
+
+```bash
+cd backend
+npm install
+npm start
+```
+
+The API listens on `http://localhost:3000`.
+
+## Endpoints
+
+- `POST /api/opportunities` creates an opportunity (201)
+- `GET /api/opportunities` lists opportunities (200). Optional filter: `?status=Open` or `?status=Closed`
+- `GET /api/opportunities/:id` returns one opportunity (200, or 404)
+- `PUT /api/opportunities/:id` updates the fields you send (200, or 404)
+- `DELETE /api/opportunities/:id` deletes an opportunity (200, or 404)
+
+Missing or invalid fields return 400. A database failure returns 500.
 
 ## Author
 
