@@ -71,11 +71,17 @@ async function createOpportunity(req, res) {
   }
 }
 
-async function getOpportunities(_req, res) {
+async function getOpportunities(req, res) {
+  const status = req.query.status;
+  if (status !== undefined && status !== "Open" && status !== "Closed") {
+    return res.status(400).json({ error: "Status filter must be Open or Closed" });
+  }
+
   try {
-    const [rows] = await pool.execute(
-      "SELECT * FROM opportunities ORDER BY application_deadline ASC, id DESC"
-    );
+    const sql = status
+      ? "SELECT * FROM opportunities WHERE status = ? ORDER BY application_deadline ASC, id DESC"
+      : "SELECT * FROM opportunities ORDER BY application_deadline ASC, id DESC";
+    const [rows] = status ? await pool.execute(sql, [status]) : await pool.execute(sql);
     res.status(200).json(rows.map(toOpportunity));
   } catch (error) {
     sendDbError(res, error);
