@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Research Opportunity Portal</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div>
+        <p class="eyebrow">FAST-NUCES Peshawar · Faculty</p>
+        <h1>Research Opportunity Portal</h1>
+        <p class="lede">Post an opening, update the seats or deadline, and close it when the positions are filled.</p>
+      </div>
+      <div class="stats" aria-label="Opportunity counts">
+        <p><strong id="stat-shown">–</strong><span>Shown</span></p>
+        <p><strong id="stat-open">–</strong><span>Open</span></p>
+        <p><strong id="stat-closed">–</strong><span>Closed</span></p>
+      </div>
+    </header>
+
+    <div id="banner" class="banner" role="status" hidden></div>
+
+    <div class="layout">
+      <section class="panel">
+        <h2 id="form-title">New opportunity</h2>
+        <p id="form-errors" class="form-errors" hidden></p>
+        <form id="opportunity-form">
+          <label>Title <input name="title" maxlength="200" /></label>
+          <label>Research area <input name="researchArea" maxlength="120" /></label>
+          <label>Faculty name <input name="facultyName" maxlength="120" /></label>
+          <label>Department <input name="department" maxlength="120" /></label>
+          <label class="wide">Description <textarea name="description" maxlength="5000" rows="4"></textarea></label>
+          <label class="wide">Required skills <input name="requiredSkills" maxlength="255" /></label>
+          <label>Available positions <input name="availablePositions" type="number" min="0" step="1" /></label>
+          <label>Application deadline <input name="applicationDeadline" type="date" /></label>
+          <label>Status
+            <select name="status">
+              <option value="Open">Open</option>
+              <option value="Closed">Closed</option>
+            </select>
+          </label>
+          <div class="row-actions">
+            <button class="btn" type="submit" id="save-btn">Create opportunity</button>
+            <button class="btn btn-quiet" type="button" id="reset-btn">Clear</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="toolbar">
+          <h2>Openings</h2>
+          <label class="filter">Show
+            <select id="status-filter">
+              <option value="">All</option>
+              <option value="Open">Open</option>
+              <option value="Closed">Closed</option>
+            </select>
+          </label>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Faculty</th>
+                <th>Deadline</th>
+                <th>Seats</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="list"></tbody>
+          </table>
+        </div>
+        <p id="empty" class="empty">No research opportunities in this view.</p>
+
+        <article id="detail" class="detail" hidden>
+          <h3 id="detail-title"></h3>
+          <dl id="detail-body"></dl>
+          <div class="row-actions">
+            <button id="edit-btn" class="btn" type="button">Edit</button>
+            <button id="status-btn" class="btn btn-quiet" type="button">Mark closed</button>
+            <button id="delete-btn" class="btn btn-danger" type="button">Delete</button>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
