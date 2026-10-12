@@ -125,6 +125,7 @@ async function loadList() {
       .map(
         (row) => `<tr data-id="${row.id}" class="${selected?.id === row.id ? "selected" : ""}">
           <td>${escapeHtml(row.title)}</td>
+          <td>${escapeHtml(row.researchArea)}</td>
           <td>${escapeHtml(row.facultyName)}</td>
           <td>${escapeHtml(row.applicationDeadline)}</td>
           <td>${escapeHtml(row.availablePositions)}</td>
