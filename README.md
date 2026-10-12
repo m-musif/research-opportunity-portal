@@ -10,7 +10,7 @@ Faculty can post research openings in one place instead of email, WhatsApp, and 
 
 - Backend: Node.js and Express
 - Database: MySQL
-- Frontend: HTML, CSS, and JavaScript (not started yet)
+- Frontend: HTML, CSS, and JavaScript, served by the same Express app
 
 ## Run the API
 
@@ -30,7 +30,7 @@ npm install
 npm start
 ```
 
-The API listens on `http://localhost:3000`.
+The API and the faculty page both listen on `http://localhost:3000`. Open that address in a browser to use the portal.
 
 ## Endpoints
 
