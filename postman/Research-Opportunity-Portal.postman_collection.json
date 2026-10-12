@@ -1,0 +1,126 @@
+{
+  "info": {
+    "name": "Research Opportunity Portal",
+    "description": "CRUD checks for the university research opportunity API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "opportunityId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Create opportunity 1",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "  pm.collectionVariables.set('opportunityId', String(pm.response.json().id));",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Urdu handwriting recognition\",\n  \"description\": \"Collect and label Urdu handwriting samples.\",\n  \"researchArea\": \"Computer vision\",\n  \"facultyName\": \"Dr. Ayesha Khan\",\n  \"department\": \"Computer Science\",\n  \"requiredSkills\": \"Python, OpenCV\",\n  \"availablePositions\": 2,\n  \"applicationDeadline\": \"2026-12-15\",\n  \"status\": \"Open\"\n}"
+        },
+        "url": "{{baseUrl}}/api/opportunities"
+      }
+    },
+    {
+      "name": "Create opportunity 2",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Campus network traffic study\",\n  \"description\": \"Measure how students use the campus Wi-Fi during class hours.\",\n  \"researchArea\": \"Computer networks\",\n  \"facultyName\": \"Dr. Bilal Ahmed\",\n  \"department\": \"Computer Science\",\n  \"requiredSkills\": \"Wireshark, Python\",\n  \"availablePositions\": 3,\n  \"applicationDeadline\": \"2026-11-30\",\n  \"status\": \"Open\"\n}"
+        },
+        "url": "{{baseUrl}}/api/opportunities"
+      }
+    },
+    {
+      "name": "Create opportunity 3",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Student advising chatbot\",\n  \"description\": \"A small assistant that answers common advising questions.\",\n  \"researchArea\": \"Natural language processing\",\n  \"facultyName\": \"Dr. Sana Malik\",\n  \"department\": \"Artificial Intelligence\",\n  \"requiredSkills\": \"JavaScript, SQL\",\n  \"availablePositions\": 1,\n  \"applicationDeadline\": \"2026-12-01\",\n  \"status\": \"Open\"\n}"
+        },
+        "url": "{{baseUrl}}/api/opportunities"
+      }
+    },
+    {
+      "name": "List opportunities",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/opportunities"
+      }
+    },
+    {
+      "name": "Get one opportunity",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/opportunities/{{opportunityId}}"
+      }
+    },
+    {
+      "name": "Update opportunity",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Urdu handwriting recognition v2\",\n  \"requiredSkills\": \"Python, OpenCV, labeling\",\n  \"availablePositions\": 4,\n  \"applicationDeadline\": \"2026-12-20\"\n}"
+        },
+        "url": "{{baseUrl}}/api/opportunities/{{opportunityId}}"
+      }
+    },
+    {
+      "name": "Close opportunity",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"Closed\"\n}"
+        },
+        "url": "{{baseUrl}}/api/opportunities/{{opportunityId}}"
+      }
+    },
+    {
+      "name": "Delete opportunity",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/opportunities/{{opportunityId}}"
+      }
+    },
+    {
+      "name": "Get deleted opportunity",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/opportunities/{{opportunityId}}"
+      }
+    },
+    {
+      "name": "Create with missing fields",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        },
+        "url": "{{baseUrl}}/api/opportunities"
+      }
+    }
+  ]
+}
