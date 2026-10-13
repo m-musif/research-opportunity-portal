@@ -14,23 +14,35 @@ Faculty can post research openings in one place instead of email, WhatsApp, and 
 
 ## Run the API
 
-1. Install MySQL and create the tables:
+1. Install MySQL and start it.
 
-```sql
-source database/schema.sql
-```
+2. From the `backend` folder, copy `.env.example` to `.env` and set the database user and password there. Do not commit `.env`.
 
-2. From the `backend` folder, copy `backend/.env.example` to `backend/.env` and set the database password there. Do not commit `.env`.
-
-3. Install dependencies and start the server:
+3. Install dependencies, create the database, and start the server:
 
 ```bash
 cd backend
 npm install
+npm run setup-db
 npm start
 ```
 
-The API and the faculty page both listen on `http://localhost:3000`. Open that address in a browser to use the portal.
+`npm run setup-db` runs `database/schema.sql` and creates the `research_portal` database. The API and the faculty page both listen on `http://localhost:3000`.
+
+If MySQL is not running, list and save return **500** with `Database is unavailable`.
+
+## Postman
+
+Import `postman/Research-Opportunity-Portal.postman_collection.json`. With the server and MySQL running, use the requests in this order:
+
+1. Create opportunity 1, 2, and 3 (201)
+2. List opportunities (200)
+3. Get one opportunity (200)
+4. Update opportunity (200)
+5. Close opportunity (200)
+6. Delete opportunity (200)
+7. Get deleted opportunity (404)
+8. Create with missing fields (400)
 
 ## Endpoints
 
