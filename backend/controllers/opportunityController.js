@@ -36,6 +36,16 @@ function parseId(value) {
 
 function sendDbError(res, error) {
   console.error(error);
+  const unavailable = [
+    "ECONNREFUSED",
+    "ENOTFOUND",
+    "ER_BAD_DB_ERROR",
+    "ER_ACCESS_DENIED_ERROR",
+    "PROTOCOL_CONNECTION_LOST",
+  ];
+  if (unavailable.includes(error.code)) {
+    return res.status(500).json({ error: "Database is unavailable" });
+  }
   res.status(500).json({ error: "Internal server error" });
 }
 
