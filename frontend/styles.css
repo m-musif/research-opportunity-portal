@@ -98,7 +98,8 @@ input.invalid, textarea.invalid, select.invalid { border-color: var(--danger); }
 
 .toolbar h2 { margin: 0; }
 .filter { color: var(--muted); font-size: 14px; }
-.filter select { margin-left: 8px; }
+.filter select, .filter input { margin-left: 8px; }
+.filter input { width: 12rem; }
 
 .table-wrap { overflow-x: auto; }
 

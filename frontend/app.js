@@ -24,9 +24,13 @@ const FIELDS = {
   status: "Status",
 };
 
+const searchEl = document.querySelector("#search");
+
 let editingId = null;
 let selected = null;
 let deleteArmed = false;
+let loadedRows = [];
+let listFailed = false;
 
 function showBanner(kind, text) {
   bannerEl.hidden = false;
@@ -115,15 +119,20 @@ function renderDetail(opportunity) {
     .join("");
 }
 
-async function loadList() {
-  const status = filterEl.value;
-  const query = status ? `?status=${encodeURIComponent(status)}` : "";
-  try {
-    const rows = await request(`/api/opportunities${query}`);
-    setStats(rows);
-    listEl.innerHTML = rows
-      .map(
-        (row) => `<tr data-id="${row.id}" class="${selected?.id === row.id ? "selected" : ""}">
+function matchesSearch(row, query) {
+  if (!query) return true;
+  return [row.title, row.researchArea, row.facultyName, row.department]
+    .join(" ")
+    .toLowerCase()
+    .includes(query);
+}
+
+function renderRows(rows) {
+  const query = searchEl.value.trim().toLowerCase();
+  const visible = rows.filter((row) => matchesSearch(row, query));
+  listEl.innerHTML = visible
+    .map(
+      (row) => `<tr data-id="${row.id}" class="${selected?.id === row.id ? "selected" : ""}">
           <td>${escapeHtml(row.title)}</td>
           <td>${escapeHtml(row.researchArea)}</td>
           <td>${escapeHtml(row.facultyName)}</td>
@@ -131,14 +140,32 @@ async function loadList() {
           <td>${escapeHtml(row.availablePositions)}</td>
           <td><span class="pill ${row.status === "Open" ? "open" : "closed"}">${row.status}</span></td>
         </tr>`
-      )
-      .join("");
-    emptyEl.hidden = rows.length > 0;
+    )
+    .join("");
+  if (query && rows.length > 0 && visible.length === 0) {
+    emptyEl.textContent = "No openings match this search.";
+  } else {
+    emptyEl.textContent = "No research opportunities in this view.";
+  }
+  emptyEl.hidden = visible.length > 0;
+}
+
+async function loadList() {
+  const status = filterEl.value;
+  const query = status ? `?status=${encodeURIComponent(status)}` : "";
+  try {
+    const rows = await request(`/api/opportunities${query}`);
+    listFailed = false;
+    loadedRows = rows;
+    setStats(rows);
+    renderRows(rows);
     if (selected && !rows.some((row) => row.id === selected.id)) {
       detailEl.hidden = true;
       selected = null;
     }
   } catch (error) {
+    listFailed = true;
+    loadedRows = [];
     listEl.innerHTML = "";
     emptyEl.hidden = false;
     emptyEl.textContent = "The list could not be loaded. Check that MySQL is running.";
@@ -166,6 +193,10 @@ listEl.addEventListener("click", (event) => {
 filterEl.addEventListener("change", () => {
   clearBanner();
   loadList();
+});
+
+searchEl.addEventListener("input", () => {
+  if (!listFailed) renderRows(loadedRows);
 });
 
 form.addEventListener("submit", async (event) => {
