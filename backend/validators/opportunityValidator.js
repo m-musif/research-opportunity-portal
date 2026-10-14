@@ -42,12 +42,18 @@ function checkDeadline(errors, value) {
     errors.push("Application deadline is required");
     return;
   }
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(value))) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(value));
+  if (!match) {
     errors.push("Application deadline must be a date in YYYY-MM-DD form");
     return;
   }
-  const parsed = new Date(`${value}T00:00:00`);
-  if (Number.isNaN(parsed.getTime())) {
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const parsed = new Date(year, month - 1, day);
+  const real =
+    parsed.getFullYear() === year && parsed.getMonth() === month - 1 && parsed.getDate() === day;
+  if (!real) {
     errors.push("Application deadline is not a real date");
   }
 }
