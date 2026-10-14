@@ -80,7 +80,20 @@ function validate(values) {
   if (values.availablePositions !== "" && !/^\d+$/.test(values.availablePositions)) {
     errors.push("Available positions must be a whole number, 0 or greater");
   }
+  if (values.applicationDeadline !== "" && !isRealDate(values.applicationDeadline)) {
+    errors.push("Application deadline is not a real date");
+  }
   return errors;
+}
+
+function isRealDate(value) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) return false;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const parsed = new Date(year, month - 1, day);
+  return parsed.getFullYear() === year && parsed.getMonth() === month - 1 && parsed.getDate() === day;
 }
 
 function fillForm(opportunity) {
@@ -205,7 +218,8 @@ form.addEventListener("submit", async (event) => {
   const values = readForm();
   const errors = validate(values);
   for (const key of Object.keys(FIELDS)) {
-    form.elements[key].classList.toggle("invalid", values[key] === "");
+    const badDate = key === "applicationDeadline" && values[key] !== "" && !isRealDate(values[key]);
+    form.elements[key].classList.toggle("invalid", values[key] === "" || badDate);
   }
   if (errors.length > 0) {
     formErrors.hidden = false;
