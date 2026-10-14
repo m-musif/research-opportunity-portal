@@ -2,9 +2,10 @@ const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const opportunityRoutes = require("./routes/opportunities");
 
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, ".env") });
+
+const opportunityRoutes = require("./routes/opportunities");
 
 const app = express();
 const port = Number(process.env.PORT) || 3000;
